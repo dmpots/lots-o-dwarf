@@ -32,6 +32,8 @@ def parse_args():
                         help='Path to lldb')
     parser.add_argument('--stats',  action='store_true', default=False,
                         help='Collect stats about the build')
+    parser.add_argument('--cflags', default="",
+                        help='Extra flags to pass to clang')
     options = parser.parse_args()
     if options.run and options.run == "both":
         options.run = ["gdb", "lldb"]
@@ -239,7 +241,7 @@ def split_object_files_into_libraries(options, obj_src, lib_src):
 
 def generate_ninja_file(options, obj_src, lib_src, main_src):
     c = options.clang
-    cflags = "-Wall -Wextra -O0 -g -gsplit-dwarf"
+    cflags = "-Wall -Wextra -O0 -g -gsplit-dwarf " + options.cflags
     linker = options.clang
     linkflags = "-g"
     libraries = split_object_files_into_libraries(options, obj_src, lib_src)
