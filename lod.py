@@ -37,6 +37,9 @@ def parse_args():
     options = parser.parse_args()
     if options.run and options.run == "both":
         options.run = ["gdb", "lldb"]
+
+    if not os.path.isabs(options.output_directory):
+        options.output_directory = os.path.abspath(options.output_directory)
     return options
 
 def get_src_name_padding(options):
